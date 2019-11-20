@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
-import Tab from "./Tab";
+import FlightTab from "./FlightTab";
+import HotelTab from "./HotelTab";
+import CarTab from "./CarTab";
 
 export default function App() {
   const [tabClicked, setTabClicked] = useState({
@@ -13,7 +15,7 @@ export default function App() {
   let carDetails = { title: "Car", description: "Car Details" };
   return (
     <View style={styles.container}>
-      <Tab
+      <FlightTab
         key="flight"
         setTabClicked={() =>
           setTabClicked({
@@ -24,9 +26,8 @@ export default function App() {
           })
         }
         tabClicked={tabClicked.flight}
-        details={flightDetails}
       />
-      <Tab
+      <HotelTab
         key="hotel"
         setTabClicked={() =>
           setTabClicked({
@@ -39,7 +40,7 @@ export default function App() {
         tabClicked={tabClicked.hotel}
         details={hotelDetails}
       />
-      <Tab
+      <CarTab
         key="car"
         setTabClicked={() =>
           setTabClicked({
