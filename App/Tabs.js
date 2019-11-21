@@ -10,42 +10,30 @@ export default function App() {
     hotel: false,
     car: false
   });
+
+  const updateTab = (updateState, noUpdate1, noUpdate2) => {
+    setTabClicked({
+      ...tabClicked,
+      [updateState]: !tabClicked[updateState],
+      [noUpdate1]: false,
+      [noUpdate2]: false
+    });
+  };
   return (
     <View style={styles.container}>
       <FlightTab
         key="flight"
-        setTabClicked={() =>
-          setTabClicked({
-            ...tabClicked,
-            flight: !tabClicked.flight,
-            hotel: false,
-            car: false
-          })
-        }
+        setTabClicked={() => updateTab("flight", "hotel", "car")}
         tabClicked={tabClicked.flight}
       />
       <HotelTab
         key="hotel"
-        setTabClicked={() =>
-          setTabClicked({
-            ...tabClicked,
-            hotel: !tabClicked.hotel,
-            flight: false,
-            car: false
-          })
-        }
+        setTabClicked={() => updateTab("hotel", "flight", "car")}
         tabClicked={tabClicked.hotel}
       />
       <CarTab
         key="car"
-        setTabClicked={() =>
-          setTabClicked({
-            ...tabClicked,
-            car: !tabClicked.car,
-            hotel: false,
-            flight: false
-          })
-        }
+        setTabClicked={() => updateTab("car", "hotel", "flight")}
         tabClicked={tabClicked.car}
       />
     </View>

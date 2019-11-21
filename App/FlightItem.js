@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 
 export default function FlightItem({ item }) {
   return (
-    <View style={{ width: 300, height: 350 }}>
+    <View style={{ width: 300 }}>
       {Object.values(item)
         .slice(1)
         .map((flightDirection, index) => {
@@ -73,7 +73,7 @@ export default function FlightItem({ item }) {
                   <Text>{flightDirection.departureAirportCode}</Text>
                 </View>
                 <Image
-                  source={require("./right-arrow.png")}
+                  source={require("./assets/right-arrow.png")}
                   style={{ width: 20, height: 20 }}
                 />
                 <View

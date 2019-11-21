@@ -1,15 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import Tabs from "./App/Tabs";
+import Itinerary from "./App/Itinerary";
 
 export default function App() {
-  const [tabClicked, setTabClicked] = useState({
-    flight: false,
-    hotel: false,
-    car: false
-  });
   return (
     <View style={styles.container}>
+      <Itinerary />
       <Tabs />
     </View>
   );

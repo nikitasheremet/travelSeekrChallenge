@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   FlatList,
-  Image
+  Image,
+  ImageBackground,
+  Modal
 } from "react-native";
 
+import CarItem from "./CarItem";
 export default function CarTab({ tabClicked, setTabClicked }) {
+  const [modalVisible, setModalVisible] = useState(false);
   const DATA = [
     {
       id: "1",
@@ -53,93 +57,120 @@ export default function CarTab({ tabClicked, setTabClicked }) {
       price: "C$44"
     }
   ];
-  function Item({ item }) {
-    return (
-      <View style={{ width: 300, height: "50%", margin: 20 }}>
-        <Image
-          source={{
-            uri: item.carPhoto
-          }}
-          style={{ width: 300, height: 130 }}
-        ></Image>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 10
-          }}
-        >
-          <Text>{item.carMake}</Text>
-          <Image
-            source={{
-              uri: item.companyLogo
-            }}
-            style={{ width: 50, height: 10 }}
-          />
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between"
-          }}
-        >
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row"
-            }}
-          >
-            <Text>{item.carType}</Text>
-            <Text>{item.numSeats}</Text>
-          </View>
-          <Text>{item.deal}</Text>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between"
-          }}
-        >
-          <Text>{item.pickUpLocation}</Text>
-          <Text>{item.price}</Text>
-        </View>
-      </View>
-    );
-  }
+
   return (
-    <View
-      style={{
-        width: "100%"
-      }}
-    >
-      <TouchableHighlight onPress={() => setTabClicked()}>
-        <Text>Car</Text>
-      </TouchableHighlight>
+    <View style={styles.tab}>
+      <TouchableWithoutFeedback onPress={() => setTabClicked()}>
+        <View style={styles.tabHeaderLayout}>
+          <View style={styles.tabHeaderLeft}>
+            <Image
+              source={require("./assets/bed.png")}
+              style={{ width: 15, height: 15, marginRight: 15 }}
+            />
+            <Text style={{ fontSize: 16, fontWeight: "bold", marginRight: 15 }}>
+              Car
+            </Text>
+            <Text style={{ fontSize: 12, color: "#525252" }}>2 Days</Text>
+          </View>
+          <View style={styles.tabHeaderRight}>
+            <Text style={{ fontSize: 14, fontWeight: "bold", marginRight: 10 }}>
+              C$ 129
+            </Text>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <Image
+                source={require("./assets/three-dots.png")}
+                style={{ width: 15, height: 15 }}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
       <View
         style={{
           display: tabClicked ? "flex" : "none",
-          height: "60%",
+          height: "65%",
           flexDirection: "column"
         }}
       >
-        <View
-          style={{
-            width: "90%",
-            display: "flex",
-            flexDirection: "column"
-          }}
-        >
-          <FlatList
-            horizontal
-            data={DATA}
-            renderItem={({ item }) => <Item item={item} />}
-            keyExtractor={item => item.id}
-          />
+        <View style={styles.tabBody}>
+          <View style={styles.filters}>
+            <Text style={styles.filtersText}>Supplier</Text>
+            <Text style={styles.filtersText}>Price</Text>
+            <Text style={styles.filtersText}>Type</Text>
+            <Text style={styles.filtersText}>Pickup</Text>
+            <Text style={styles.filtersText}>Drop Off</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <FlatList
+              horizontal
+              data={DATA}
+              renderItem={({ item }) => <CarItem item={item} />}
+              keyExtractor={item => item.id}
+            />
+          </View>
         </View>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(!modalVisible)}
+      >
+        <View style={{ padding: 50, display: "flex", alignItems: "flex-end" }}>
+          <View>
+            <TouchableWithoutFeedback
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={{ fontSize: 20 }}>X</Text>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tab: {
+    width: "100%",
+    backgroundColor: "#F1F1F1",
+    borderTopLeftRadius: 30,
+    zIndex: 3
+  },
+  tabHeaderLayout: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: 30,
+    alignItems: "center",
+    paddingTop: 20,
+    justifyContent: "space-between",
+    paddingBottom: 15
+  },
+  tabHeaderLeft: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  tabHeaderRight: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingRight: 15
+  },
+  tabBody: { width: "100%", paddingLeft: 20, marginTop: 10, height: 400 },
+  filters: { display: "flex", flexDirection: "row", marginLeft: 10 },
+  filtersText: {
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: "#B9DEB9",
+    padding: 5,
+    backgroundColor: "#B9DEB9",
+    overflow: "hidden",
+    color: "#00AF95",
+    marginRight: 20
+  }
+});

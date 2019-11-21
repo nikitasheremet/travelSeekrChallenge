@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   FlatList,
   Image,
   Modal
@@ -110,35 +110,12 @@ export default function FlightTab({ tabClicked, setTabClicked }) {
   ];
 
   return (
-    <View
-      style={{
-        width: "100%",
-        backgroundColor: "#F1F1F1",
-        borderTopLeftRadius: "30px",
-        borderBottomWidth: "none"
-      }}
-    >
-      <TouchableHighlight onPress={() => setTabClicked()}>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginLeft: 30,
-            alignItems: "center",
-            marginTop: 20,
-            justifyContent: "space-between",
-            marginBottom: 15
-          }}
-        >
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center"
-            }}
-          >
+    <View style={styles.tab}>
+      <TouchableWithoutFeedback onPress={() => setTabClicked()}>
+        <View style={styles.tabHeaderLayout}>
+          <View style={styles.tabHeaderLeft}>
             <Image
-              source={require("./plane.png")}
+              source={require("./assets/plane.png")}
               style={{ width: 15, height: 15, marginRight: 15 }}
             />
             <Text style={{ fontSize: 16, fontWeight: "bold", marginRight: 15 }}>
@@ -148,106 +125,36 @@ export default function FlightTab({ tabClicked, setTabClicked }) {
               Return, 1 Person
             </Text>
           </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              paddingRight: 15
-            }}
-          >
+          <View style={styles.tabHeaderRight}>
             <Text style={{ fontSize: 14, fontWeight: "bold", marginRight: 10 }}>
               C$ 650
             </Text>
-            <TouchableHighlight
+            <TouchableWithoutFeedback
               onPress={() => {
                 setModalVisible(true);
               }}
             >
               <Image
-                source={require("./three-dots.png")}
-                style={{ width: 15, height: 15, backgroundColor: "#F1F1F1" }}
+                source={require("./assets/three-dots.png")}
+                style={{ width: 15, height: 15 }}
               />
-            </TouchableHighlight>
+            </TouchableWithoutFeedback>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableWithoutFeedback>
       <View
         style={{
           display: tabClicked ? "flex" : "none",
-          height: "60%",
+          height: "65%",
           flexDirection: "column"
         }}
       >
-        <View
-          style={{
-            width: "100%",
-            paddingLeft: 20,
-            marginTop: 10
-          }}
-        >
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginLeft: 10
-            }}
-          >
-            <Text
-              style={{
-                borderWidth: 1,
-                borderRadius: 15,
-                borderColor: "#B9DEB9",
-                padding: 5,
-                backgroundColor: "#B9DEB9",
-                overflow: "hidden",
-                color: "#00AF95",
-                marginRight: 20
-              }}
-            >
-              Airlines
-            </Text>
-            <Text
-              style={{
-                borderWidth: 1,
-                borderRadius: 15,
-                borderColor: "#B9DEB9",
-                padding: 5,
-                backgroundColor: "#B9DEB9",
-                overflow: "hidden",
-                color: "#00AF95",
-                marginRight: 20
-              }}
-            >
-              Stops
-            </Text>
-            <Text
-              style={{
-                borderWidth: 1,
-                borderRadius: 15,
-                borderColor: "#B9DEB9",
-                padding: 5,
-                backgroundColor: "#B9DEB9",
-                overflow: "hidden",
-                color: "#00AF95",
-                marginRight: 20
-              }}
-            >
-              Time In
-            </Text>
-            <Text
-              style={{
-                borderWidth: 1,
-                borderRadius: 15,
-                borderColor: "#B9DEB9",
-                padding: 5,
-                backgroundColor: "#B9DEB9",
-                overflow: "hidden",
-                color: "#00AF95"
-              }}
-            >
-              Time Out
-            </Text>
+        <View style={styles.tabBody}>
+          <View style={styles.filters}>
+            <Text style={styles.filtersText}>Airlines</Text>
+            <Text style={styles.filtersText}>Stops</Text>
+            <Text style={styles.filtersText}>Time In</Text>
+            <Text style={styles.filtersText}>Time Out</Text>
           </View>
           <View style={{ marginTop: 10 }}>
             <FlatList
@@ -267,12 +174,55 @@ export default function FlightTab({ tabClicked, setTabClicked }) {
       >
         <View style={{ padding: 50, display: "flex", alignItems: "flex-end" }}>
           <View>
-            <TouchableHighlight onPress={() => setModalVisible(!modalVisible)}>
+            <TouchableWithoutFeedback
+              onPress={() => setModalVisible(!modalVisible)}
+            >
               <Text style={{ fontSize: 20 }}>X</Text>
-            </TouchableHighlight>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tab: {
+    width: "100%",
+    backgroundColor: "#F1F1F1",
+    borderTopLeftRadius: 30,
+    zIndex: 1
+  },
+  tabHeaderLayout: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: 30,
+    alignItems: "center",
+    paddingTop: 20,
+    justifyContent: "space-between",
+    paddingBottom: 15
+  },
+  tabHeaderLeft: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  tabHeaderRight: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingRight: 15
+  },
+  tabBody: { width: "100%", paddingLeft: 20, marginTop: 10, height: 450 },
+  filters: { display: "flex", flexDirection: "row", marginLeft: 10 },
+  filtersText: {
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: "#B9DEB9",
+    padding: 5,
+    backgroundColor: "#B9DEB9",
+    overflow: "hidden",
+    color: "#00AF95",
+    marginRight: 20
+  }
+});

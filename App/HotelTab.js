@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   FlatList,
   Image,
-  ImageBackground
+  ImageBackground,
+  Modal
 } from "react-native";
+import HotelItem from "./HotelItem";
 
-export default function FlightTab({ tabClicked, setTabClicked }) {
+export default function HotetlTab({ tabClicked, setTabClicked }) {
+  const [modalVisible, setModalVisible] = useState(false);
   const DATA = [
     {
       id: "1",
@@ -51,97 +54,121 @@ export default function FlightTab({ tabClicked, setTabClicked }) {
       price: "C$163"
     }
   ];
-  function Item({ item }) {
-    let image = item.hotelPicture;
-    return (
-      <View style={{ width: 300, height: "50%", margin: 20 }}>
-        <ImageBackground
-          source={{
-            uri: item.hotelPicture
-          }}
-          style={{ width: 300, height: 100 }}
-        >
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignSelf: "flex-end",
-              paddingTop: 80,
-              paddingLeft: 10
-            }}
-          >
-            <Text
-              style={{ color: "white", fontWeight: "bold", marginRight: 8 }}
-            >
-              {item.rating}
-            </Text>
-            <Text
-              style={{ color: "white", fontWeight: "bold", marginRight: 8 }}
-            >
-              {item.ratingText}
-            </Text>
-            <Text
-              style={{ color: "white", fontWeight: "bold", marginRight: 8 }}
-            >
-              {item.ratingDesc}
-            </Text>
-          </View>
-        </ImageBackground>
 
-        <View style={{ display: "flex", flexDirection: "column" }}>
-          <Text
-            style={{
-              fontWeight: "600",
-              fontSize: 18,
-              marginTop: 10,
-              marginBottom: 10
-            }}
-          >
-            {item.hotelName}
-          </Text>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <Text>{item.partnerInfo}</Text>
-            <Text>{item.deal}</Text>
+  return (
+    <View style={styles.tab}>
+      <TouchableWithoutFeedback onPress={() => setTabClicked()}>
+        <View style={styles.tabHeaderLayout}>
+          <View style={styles.tabHeaderLeft}>
+            <Image
+              source={require("./assets/bed.png")}
+              style={{ width: 15, height: 15, marginRight: 15 }}
+            />
+            <Text style={{ fontSize: 16, fontWeight: "bold", marginRight: 15 }}>
+              Hotel
+            </Text>
+            <Text style={{ fontSize: 12, color: "#525252" }}>
+              2 Nights, 1 Room
+            </Text>
+          </View>
+          <View style={styles.tabHeaderRight}>
+            <Text style={{ fontSize: 14, fontWeight: "bold", marginRight: 10 }}>
+              C$ 326
+            </Text>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <Image
+                source={require("./assets/three-dots.png")}
+                style={{ width: 15, height: 15 }}
+              />
+            </TouchableWithoutFeedback>
           </View>
         </View>
-        <View style={{ display: "flex", flexDirection: "row", marginTop: 30 }}>
-          <Text>{item.distance}</Text>
-          <Text>{item.price}</Text>
-        </View>
-      </View>
-    );
-  }
-  return (
-    <View
-      style={{
-        width: "100%"
-      }}
-    >
-      <TouchableHighlight onPress={() => setTabClicked()}>
-        <Text>Hotel</Text>
-      </TouchableHighlight>
+      </TouchableWithoutFeedback>
       <View
         style={{
           display: tabClicked ? "flex" : "none",
-          height: "60%",
+          height: "65%",
           flexDirection: "column"
         }}
       >
-        <View
-          style={{
-            width: "90%",
-            display: "flex",
-            flexDirection: "column"
-          }}
-        >
-          <FlatList
-            horizontal
-            data={DATA}
-            renderItem={({ item }) => <Item item={item} />}
-            keyExtractor={item => item.id}
-          />
+        <View style={styles.tabBody}>
+          <View style={styles.filters}>
+            <Text style={styles.filtersText}>Name</Text>
+            <Text style={styles.filtersText}>Type</Text>
+            <Text style={styles.filtersText}>Price</Text>
+            <Text style={styles.filtersText}>Location</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <FlatList
+              horizontal
+              data={DATA}
+              renderItem={({ item }) => <HotelItem item={item} />}
+              keyExtractor={item => item.id}
+            />
+          </View>
         </View>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(!modalVisible)}
+      >
+        <View style={{ padding: 50, display: "flex", alignItems: "flex-end" }}>
+          <View>
+            <TouchableWithoutFeedback
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={{ fontSize: 20 }}>X</Text>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tab: {
+    width: "100%",
+    backgroundColor: "white",
+    borderTopLeftRadius: 30,
+    zIndex: 2
+  },
+  tabHeaderLayout: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: 30,
+    alignItems: "center",
+    paddingTop: 20,
+    justifyContent: "space-between",
+    paddingBottom: 15
+  },
+  tabHeaderLeft: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  tabHeaderRight: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingRight: 15
+  },
+  tabBody: { width: "100%", paddingLeft: 20, marginTop: 10, height: 400 },
+  filters: { display: "flex", flexDirection: "row", marginLeft: 10 },
+  filtersText: {
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: "#B9DEB9",
+    padding: 5,
+    backgroundColor: "#B9DEB9",
+    overflow: "hidden",
+    color: "#00AF95",
+    marginRight: 20
+  }
+});
