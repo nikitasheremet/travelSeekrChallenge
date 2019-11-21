@@ -1,18 +1,15 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
+import { StyleSheet, View } from "react-native";
 import FlightTab from "./FlightTab";
 import HotelTab from "./HotelTab";
 import CarTab from "./CarTab";
 
 export default function App() {
   const [tabClicked, setTabClicked] = useState({
-    flight: false,
+    flight: true,
     hotel: false,
     car: false
   });
-  let flightDetails = { title: "Flight", description: "Flight Details" };
-  let hotelDetails = { title: "Hotel", description: "Hotel Details" };
-  let carDetails = { title: "Car", description: "Car Details" };
   return (
     <View style={styles.container}>
       <FlightTab
@@ -38,7 +35,6 @@ export default function App() {
           })
         }
         tabClicked={tabClicked.hotel}
-        details={hotelDetails}
       />
       <CarTab
         key="car"
@@ -51,7 +47,6 @@ export default function App() {
           })
         }
         tabClicked={tabClicked.car}
-        details={carDetails}
       />
     </View>
   );
@@ -60,9 +55,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#66C1C1",
     alignItems: "center",
     justifyContent: "flex-end",
-    paddingBottom: 25
+    paddingBottom: 25,
+    width: "100%"
   }
 });
